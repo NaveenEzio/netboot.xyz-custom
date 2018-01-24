@@ -1,12 +1,22 @@
 #!ipxe
 ###
-### netboot.xyz-custom menu
+### Custom Boots
 ###
 
 :start
-echo Hello world!
-sleep 10
-goto custom_exit
+clear choice
+menu Custom Boot
+item option_one ${space} Alpine Virtual 3.7
+choose choice || goto default_exit
+echo ${cls}
+goto ${choice}
+goto default_exit
 
-:custom_exit
-exit 0
+:option_one
+kernel https://boot.netboot.xyz/memdisk raw iso
+initrd http://dl-cdn.alpinelinux.org/alpine/v3.7/releases/x86_64/alpine-virt-3.7.0-x86_64.iso
+boot || goto default_exit
+
+:default_exit
+chain utils.ipxe
+exit
