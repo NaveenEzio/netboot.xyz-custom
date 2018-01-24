@@ -7,6 +7,7 @@
 clear choice
 menu Custom Boot
 item option_one ${space} Alpine Virtual 3.7
+item option_two ${space} RancherOS
 choose choice || goto default_exit
 echo ${cls}
 goto ${choice}
@@ -16,6 +17,12 @@ goto default_exit
 kernel https://boot.netboot.xyz/memdisk raw iso
 initrd http://dl-cdn.alpinelinux.org/alpine/v3.7/releases/x86_64/alpine-virt-3.7.0-x86_64.iso
 boot || goto default_exit
+
+:option_two
+echo Login with rancher:rancher
+kernel http://releases.rancher.com/os/latest/vmlinuz rancher.state.autoformat=[/dev/sda] rancher.password=rancher initrd=initrd
+initrd http://releases.rancher.com/os/latest/initrd
+boot
 
 :default_exit
 chain utils.ipxe
